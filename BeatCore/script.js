@@ -1,4 +1,4 @@
-/* ---------------- THEME ---------------- */
+/* tema */
 function applyTheme(t){
   document.documentElement.setAttribute('data-theme', t);
   document.querySelectorAll('.theme-btn').forEach(b=>{ b.textContent = t==='dark' ? '☀️ claro' : '🌙 escuro'; });
@@ -14,150 +14,6 @@ function initTheme(){
   applyTheme(t);
 }
 
-/* ---------------- PRODUCT ART (realistic shaded SVG renders) ---------------- */
-let iconSeq = 0;
-function nextUid(){ return 'ic' + (iconSeq++); }
-
-function sharedDefs(uid){
-  return `
-    <linearGradient id="${uid}-body" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#3d3b34"/>
-      <stop offset="100%" stop-color="#0b0b09"/>
-    </linearGradient>
-    <linearGradient id="${uid}-metal" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#8c897f"/>
-      <stop offset="50%" stop-color="#dcd9cb"/>
-      <stop offset="100%" stop-color="#8c897f"/>
-    </linearGradient>
-    <radialGradient id="${uid}-gloss" cx="32%" cy="26%" r="75%">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity=".5"/>
-      <stop offset="45%" stop-color="#ffffff" stop-opacity="0"/>
-    </radialGradient>
-    <filter id="${uid}-shadow" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="2.2"/>
-    </filter>`;
-}
-function accDefs(uid, c){
-  return `<radialGradient id="${uid}-acc" cx="35%" cy="28%" r="80%">
-      <stop offset="0%" stop-color="${c.l}"/>
-      <stop offset="55%" stop-color="${c.m}"/>
-      <stop offset="100%" stop-color="${c.d}"/>
-    </radialGradient>`;
-}
-function wrap(uid, c, body){
-  return `<defs>${sharedDefs(uid)}${accDefs(uid,c)}</defs>${body}`;
-}
-
-const ART = {
-  boombox: (uid,c)=>wrap(uid,c,`
-    <ellipse cx="50" cy="88" rx="34" ry="6" fill="#000" opacity=".22" filter="url(#${uid}-shadow)"/>
-    <rect x="8" y="30" width="84" height="50" rx="6" fill="url(#${uid}-body)" stroke="#000" stroke-width="1.5"/>
-    <rect x="8" y="30" width="84" height="50" rx="6" fill="url(#${uid}-gloss)"/>
-    <circle cx="30" cy="56" r="16" fill="url(#${uid}-acc)" stroke="#000" stroke-width="1.5"/>
-    <circle cx="30" cy="56" r="16" fill="url(#${uid}-gloss)"/>
-    <circle cx="70" cy="56" r="16" fill="url(#${uid}-acc)" stroke="#000" stroke-width="1.5"/>
-    <circle cx="70" cy="56" r="16" fill="url(#${uid}-gloss)"/>
-    <g stroke="#000" stroke-width="1" opacity=".5" fill="none">
-      <circle cx="30" cy="56" r="10"/><circle cx="30" cy="56" r="5"/>
-      <circle cx="70" cy="56" r="10"/><circle cx="70" cy="56" r="5"/>
-    </g>
-    <path d="M20 30 Q50 6 80 30" fill="none" stroke="url(#${uid}-metal)" stroke-width="4" stroke-linecap="round"/>
-    <rect x="44" y="14" width="12" height="7" rx="1.5" fill="#f4e400" stroke="#000" stroke-width="1"/>`),
-
-  orb: (uid,c)=>wrap(uid,c,`
-    <ellipse cx="50" cy="90" rx="26" ry="5" fill="#000" opacity=".2" filter="url(#${uid}-shadow)"/>
-    <circle cx="50" cy="56" r="34" fill="url(#${uid}-body)" stroke="#000" stroke-width="1.5"/>
-    <circle cx="50" cy="56" r="34" fill="url(#${uid}-gloss)"/>
-    <circle cx="50" cy="56" r="20" fill="url(#${uid}-acc)" stroke="#000" stroke-width="1.2"/>
-    <g stroke="#000" stroke-width="1" opacity=".45" fill="none">
-      <circle cx="50" cy="56" r="14"/><circle cx="50" cy="56" r="7"/>
-    </g>
-    <path d="M40 20 Q50 12 60 20" fill="none" stroke="url(#${uid}-metal)" stroke-width="3" stroke-linecap="round"/>`),
-
-  overear: (uid,c)=>wrap(uid,c,`
-    <ellipse cx="50" cy="92" rx="30" ry="5" fill="#000" opacity=".18" filter="url(#${uid}-shadow)"/>
-    <path d="M16 58 A34 34 0 0 1 84 58" fill="none" stroke="url(#${uid}-metal)" stroke-width="5" stroke-linecap="round"/>
-    <path d="M16 58 A34 34 0 0 1 84 58" fill="none" stroke="#000" stroke-width="1" opacity=".3"/>
-    <rect x="4" y="54" width="20" height="30" rx="9" fill="url(#${uid}-body)" stroke="#000" stroke-width="1.5"/>
-    <rect x="4" y="54" width="20" height="30" rx="9" fill="url(#${uid}-gloss)"/>
-    <rect x="76" y="54" width="20" height="30" rx="9" fill="url(#${uid}-body)" stroke="#000" stroke-width="1.5"/>
-    <rect x="76" y="54" width="20" height="30" rx="9" fill="url(#${uid}-gloss)"/>
-    <ellipse cx="14" cy="69" rx="6" ry="10" fill="url(#${uid}-acc)"/>
-    <ellipse cx="86" cy="69" rx="6" ry="10" fill="url(#${uid}-acc)"/>`),
-
-  inear: (uid,c)=>wrap(uid,c,`
-    <ellipse cx="50" cy="92" rx="24" ry="4" fill="#000" opacity=".16" filter="url(#${uid}-shadow)"/>
-    <ellipse cx="32" cy="42" rx="16" ry="20" fill="url(#${uid}-body)" stroke="#000" stroke-width="1.4"/>
-    <ellipse cx="32" cy="42" rx="16" ry="20" fill="url(#${uid}-gloss)"/>
-    <ellipse cx="72" cy="62" rx="16" ry="20" fill="url(#${uid}-body)" stroke="#000" stroke-width="1.4"/>
-    <ellipse cx="72" cy="62" rx="16" ry="20" fill="url(#${uid}-gloss)"/>
-    <circle cx="32" cy="36" r="5" fill="url(#${uid}-acc)"/>
-    <circle cx="72" cy="56" r="5" fill="url(#${uid}-acc)"/>
-    <path d="M32 60 Q45 85 72 80" fill="none" stroke="url(#${uid}-metal)" stroke-width="3"/>`),
-
-  turntable: (uid,c)=>wrap(uid,c,`
-    <ellipse cx="46" cy="92" rx="36" ry="5" fill="#000" opacity=".2" filter="url(#${uid}-shadow)"/>
-    <rect x="6" y="70" width="80" height="12" rx="2" fill="url(#${uid}-body)" stroke="#000" stroke-width="1.2"/>
-    <circle cx="44" cy="56" r="36" fill="url(#${uid}-body)" stroke="#000" stroke-width="1.5"/>
-    <circle cx="44" cy="56" r="36" fill="url(#${uid}-gloss)"/>
-    <g stroke="#000" stroke-width=".6" opacity=".35" fill="none">
-      <circle cx="44" cy="56" r="30"/><circle cx="44" cy="56" r="24"/><circle cx="44" cy="56" r="18"/>
-    </g>
-    <circle cx="44" cy="56" r="10" fill="url(#${uid}-acc)" stroke="#000" stroke-width="1"/>
-    <circle cx="44" cy="56" r="2.5" fill="#000"/>
-    <path d="M64 30 L90 16" stroke="url(#${uid}-metal)" stroke-width="4" stroke-linecap="round"/>
-    <circle cx="90" cy="16" r="4" fill="url(#${uid}-metal)" stroke="#000" stroke-width="1"/>`),
-
-  wristband: (uid,c)=>wrap(uid,c,`
-    <ellipse cx="50" cy="90" rx="30" ry="5" fill="#000" opacity=".16" filter="url(#${uid}-shadow)"/>
-    <path d="M10 54 Q50 16 90 54 Q50 88 10 54 Z" fill="url(#${uid}-body)" stroke="#000" stroke-width="1.5"/>
-    <path d="M10 54 Q50 16 90 54 Q50 88 10 54 Z" fill="url(#${uid}-gloss)"/>
-    <rect x="34" y="42" width="32" height="24" rx="5" fill="url(#${uid}-acc)" stroke="#000" stroke-width="1.2"/>
-    <path d="M38 54 Q44 46 50 54 T62 54" fill="none" stroke="#0b0b09" stroke-width="2" opacity=".6"/>`),
-
-  cushion: (uid,c)=>wrap(uid,c,`
-    <ellipse cx="50" cy="92" rx="34" ry="5" fill="#000" opacity=".14" filter="url(#${uid}-shadow)"/>
-    <rect x="10" y="14" width="80" height="68" rx="12" fill="url(#${uid}-body)" stroke="#000" stroke-width="1.5"/>
-    <rect x="10" y="14" width="80" height="68" rx="12" fill="url(#${uid}-gloss)"/>
-    <rect x="16" y="20" width="68" height="56" rx="8" fill="none" stroke="#f7f4e9" stroke-width="1.5" stroke-dasharray="3 3" opacity=".55"/>
-    <path d="M22 48 Q34 26 46 48 T78 48" fill="none" stroke="url(#${uid}-acc)" stroke-width="4"/>
-    <path d="M22 64 Q34 46 46 64 T78 64" fill="none" stroke="url(#${uid}-acc)" stroke-width="2.4" opacity=".65"/>`),
-
-  bonecond: (uid,c)=>wrap(uid,c,`
-    <ellipse cx="50" cy="92" rx="28" ry="5" fill="#000" opacity=".16" filter="url(#${uid}-shadow)"/>
-    <path d="M14 44 A36 36 0 0 1 86 44" fill="none" stroke="url(#${uid}-metal)" stroke-width="4.5" stroke-linecap="round"/>
-    <circle cx="14" cy="48" r="13" fill="url(#${uid}-acc)" stroke="#000" stroke-width="1.3"/>
-    <circle cx="86" cy="48" r="13" fill="url(#${uid}-acc)" stroke="#000" stroke-width="1.3"/>
-    <path d="M14 60 Q8 76 22 84" fill="none" stroke="url(#${uid}-metal)" stroke-width="3" stroke-linecap="round"/>`),
-
-  strobe: (uid,c)=>wrap(uid,c,`
-    <ellipse cx="50" cy="92" rx="20" ry="4" fill="#000" opacity=".16" filter="url(#${uid}-shadow)"/>
-    <circle cx="50" cy="52" r="24" fill="url(#${uid}-acc)" stroke="#000" stroke-width="1.5"/>
-    <circle cx="50" cy="52" r="24" fill="url(#${uid}-gloss)"/>
-    <g stroke="#0b0b09" stroke-width="3" stroke-linecap="round" opacity=".85">
-      <path d="M50 16 L50 4"/><path d="M50 88 L50 98"/><path d="M14 52 L4 52"/><path d="M86 52 L96 52"/>
-      <path d="M24 26 L15 17"/><path d="M76 26 L85 17"/><path d="M24 78 L15 87"/><path d="M76 78 L85 87"/>
-    </g>
-    <rect x="42" y="82" width="16" height="10" rx="2" fill="url(#${uid}-body)" stroke="#000" stroke-width="1"/>`),
-
-  cable: (uid,c)=>wrap(uid,c,`
-    <ellipse cx="50" cy="92" rx="30" ry="4" fill="#000" opacity=".14" filter="url(#${uid}-shadow)"/>
-    <path d="M8 76 Q30 40 50 60 T94 22" fill="none" stroke="url(#${uid}-acc)" stroke-width="5"/>
-    <path d="M8 76 Q30 40 50 60 T94 22" fill="none" stroke="#000" stroke-width="1" opacity=".25"/>
-    <rect x="0" y="68" width="18" height="16" rx="3" fill="url(#${uid}-metal)" stroke="#000" stroke-width="1.3"/>
-    <rect x="82" y="12" width="18" height="16" rx="3" fill="url(#${uid}-metal)" stroke="#000" stroke-width="1.3"/>`),
-
-  amp: (uid,c)=>wrap(uid,c,`
-    <ellipse cx="50" cy="92" rx="34" ry="5" fill="#000" opacity=".18" filter="url(#${uid}-shadow)"/>
-    <rect x="10" y="26" width="80" height="52" rx="6" fill="url(#${uid}-body)" stroke="#000" stroke-width="1.5"/>
-    <rect x="10" y="26" width="80" height="52" rx="6" fill="url(#${uid}-gloss)"/>
-    <circle cx="34" cy="52" r="12" fill="url(#${uid}-acc)" stroke="#000" stroke-width="1.3"/>
-    <circle cx="66" cy="52" r="12" fill="url(#${uid}-acc)" stroke="#000" stroke-width="1.3"/>
-    <line x1="34" y1="52" x2="34" y2="42" stroke="#0b0b09" stroke-width="2"/>
-    <line x1="66" y1="52" x2="66" y2="42" stroke="#0b0b09" stroke-width="2"/>
-    <rect x="10" y="14" width="80" height="10" fill="#f4e400" stroke="#000" stroke-width="1.2"/>`),
-};
-
 const CAT_COLORS = {
   caixas:    {l:'#fff685', m:'#f4e400', d:'#c9ba00'},
   fones:     {l:'#ff8d85', m:'#e8342a', d:'#a8241d'},
@@ -170,7 +26,7 @@ function productArt(p){
   return `<img src="${p.image}" alt="${p.name}" loading="lazy">`;
 }
 
-/* ---------------- DATA ---------------- */
+/* Camadas por categoria */
 const CAT_LAYER = { caixas:'layer', fones:'layer-red', vinil:'layer-blue', acessivel:'layer-red', acessorios:'layer' };
 
 const PRODUCTS = [
@@ -196,6 +52,22 @@ const PRODUCTS = [
     desc:'cabo reforçado que não arrebenta na primeira semana de uso.'},
   {id:'ap02', name:'AMPLIFICADOR DE BOLSO 20W', cat:'acessorios', price:149, art:'amp', image:'img/stitch_low_poly_product_assets/edit_this_retro_psx_low_poly_pocket_guitar_amplifier_amplificador_de_bolso_20w/screen.png', tag:'PORTÁTIL', featured:false,
     desc:'mini amplificador pra transformar qualquer caixinha velha em problema do prédio inteiro.'},
+  {id:'fn03', name:'MICROFONE VINTAGE FX', cat:'fones', price:459, art:'microphone', image:'img/stitch_low_poly_product_assets/a_retro_psx_playstation_1_90s_video_game_style_3d_render_of_a_fictional_studio/screen.png', tag:'ESTÚDIO', featured:true,
+    desc:'microfone de estúdio com visual retrô pra gravar voz, beat e qualquer ideia que não cabe no silêncio.'},
+  {id:'ap03', name:'WALKMAN C-TAPE', cat:'acessorios', price:199, art:'walkman', image:'img/stitch_low_poly_product_assets/a_retro_psx_playstation_1_90s_video_game_style_3d_render_of_a_fictional_retro_2/screen.png', tag:'FITA CASSETE', featured:false,
+    desc:'tocador portátil de fita pra levar sua mixtape no bolso e rebobinar sem pressa.'},
+  {id:'cx03', name:'RÁDIO ORBITAL 98.5', cat:'caixas', price:289, art:'radio', image:'img/stitch_low_poly_product_assets/a_retro_psx_playstation_1_90s_video_game_style_3d_render_of_a_fictional_2/screen.png', tag:'FM', featured:false,
+    desc:'rádio portátil com antena e presença de sobra pra sintonizar a rua onde você estiver.'},
+  {id:'ap04', name:'KEYTAR PATCH', cat:'acessorios', price:749, art:'keytar', image:'img/stitch_low_poly_product_assets/a_retro_psx_playstation_1_90s_video_game_style_3d_render_of_a_fictional_1/screen.png', tag:'SINTETIZADOR', featured:true,
+    desc:'keytar compacto com controles de pitch e modulação pra tocar o grave em movimento.'},
+  {id:'ac05', name:'MEGAFONE GRAVEIRO', cat:'acessivel', price:179, art:'megaphone', image:'img/stitch_low_poly_product_assets/a_retro_psx_playstation_1_90s_video_game_style_3d_render_of_a_fictional_guitar/screen.png', tag:'VOZ E ALERTA', featured:false,
+    desc:'megafone portátil com alça firme pra chamar a pista, a praça ou a galera do outro lado da rua.'},
+  {id:'ap05', name:'MUSIC LAUNCHPAD', cat:'acessorios', price:529, art:'launchpad', image:'img/stitch_low_poly_product_assets/a_retro_psx_playstation_1_90s_video_game_style_3d_render_of_a_fictional_music/screen.png', tag:'MIDI', featured:false,
+    desc:'controlador de pads iluminados pra disparar samples, loops e batidas sem tirar a mão do palco.'},
+  {id:'ap06', name:'EQUALIZADOR EQ-M100', cat:'acessorios', price:399, art:'equalizer', image:'img/stitch_low_poly_product_assets/a_retro_psx_playstation_1_90s_video_game_style_3d_render_of_a_fictional_retro_1/screen.png', tag:'RACK', featured:false,
+    desc:'equalizador gráfico pra esculpir o som da sua cadeia e deixar cada frequência no lugar certo.'},
+  {id:'ap07', name:'MÓDULO DISTORÇÃO DE-1', cat:'acessorios', price:249, art:'effects', image:'img/stitch_low_poly_product_assets/a_retro_psx_playstation_1_90s_video_game_style_3d_render_of_a_fictional_modular/screen.png', tag:'EFEITO', featured:false,
+    desc:'módulo compacto de distorção com controles diretos pra sujar o sinal do jeito certo.'},
 ];
 
 const CATEGORIES = [
@@ -217,7 +89,7 @@ const NEWS = [
 
 let currentCategory = 'todos';
 
-/* ---------------- STORAGE HELPERS ---------------- */
+/* manipulçao do armazenamento local*/
 const LS = { users:'beatcore_users', session:'beatcore_session', cartPrefix:'beatcore_cart_' };
 function safeGet(key, fallback){ try{ const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }catch(e){ return fallback; } }
 function safeSet(key, val){ try{ localStorage.setItem(key, JSON.stringify(val)); }catch(e){} }
@@ -227,14 +99,14 @@ function setSession(u){ try{ if(u) localStorage.setItem(LS.session, u); else loc
 function getCart(user){ return safeGet(LS.cartPrefix+user, []); }
 function setCart(user, cart){ safeSet(LS.cartPrefix+user, cart); }
 
-/* ---------------- ROUTING ---------------- */
+/* Navegação entre as paginas */
 function go(view){
   const pages = {home:'index.html', loja:'loja.html', carrinho:'carrinho.html', login:'login.html'};
   if(pages[view]) window.location.href = pages[view];
 }
 function toggleMobileNav(){ document.getElementById('mobile-nav')?.classList.toggle('hidden'); }
 
-/* ---------------- TOASTS ---------------- */
+/* Mensagem com exibição dependente do valor */
 function toast(msg){
   const wrap = document.getElementById('toast-wrap');
   const t = document.createElement('div');
@@ -244,7 +116,7 @@ function toast(msg){
   setTimeout(()=>{ t.style.opacity='0'; t.style.transition='opacity .3s'; setTimeout(()=>t.remove(),300); }, 2600);
 }
 
-/* ---------------- RENDER: HOME ---------------- */
+/* render home*/
 function renderNews(){
   const grid = document.getElementById('news-grid');
   if(!grid) return;
@@ -263,7 +135,7 @@ function renderFeatured(){
   if(grid) grid.innerHTML = PRODUCTS.filter(p=>p.featured).map(productCard).join('');
 }
 
-/* ---------------- RENDER: CATALOG ---------------- */
+/* render do catalogo */
 function renderChips(){
   const row = document.getElementById('chip-row');
   if(!row) return;
@@ -307,7 +179,7 @@ function renderCatalog(){
   document.getElementById('catalog-empty')?.classList.toggle('hidden', list.length>0);
 }
 
-/* ---------------- CART ---------------- */
+/*  carrinho */
 function updateCartBadge(){
   const user = getSession();
   const cart = user ? getCart(user) : [];
@@ -393,7 +265,7 @@ function checkout(){
   toast('pedido na fila 🔊 alguém te chama em breve');
 }
 
-/* ---------------- AUTH ---------------- */
+/* alternar entre as abas de autenticação */
 function setAuthTab(tab){
   if(!document.getElementById('tab-entrar')) return;
   document.getElementById('tab-entrar').classList.toggle('active', tab==='entrar');
@@ -454,7 +326,7 @@ function refreshAuthUI(){
   updateCartBadge();
 }
 
-/* ---------------- INIT ---------------- */
+/* Aplicação do tema */
 function init(){
   initTheme();
   if(location.pathname.endsWith('loja.html') && CATEGORIES.some(c=>c.id===location.hash.slice(1))){
