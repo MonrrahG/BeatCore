@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BEATCORE — Loja</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="grain">
+<header class="sticky top-0 z-50 on-black border-b-[3px] border-[var(--yellow)]">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
+    <a href="index.html" class="logo-mark display text-2xl sm:text-3xl tracking-tight" style="color:var(--yellow);">BEATCORE</a>
+    <nav class="hidden md:flex items-center gap-5 text-sm font-bold">
+      <a href="index.html" class="nav-link">hub</a>
+      <a href="loja.html" class="nav-link on" style="color:var(--yellow)">loja</a>
+      <a href="carrinho.html" class="nav-link flex items-center gap-1">carrinho <span id="cart-count" class="sticker !text-[.6rem] !py-0 !px-1">0</span></a>
+      <span id="auth-slot"></span>
+      <button class="theme-btn" onclick="toggleTheme()">🌙 escuro</button>
+    </nav>
+    <button id="burger" class="md:hidden text-2xl leading-none" onclick="toggleMobileNav()" aria-label="menu">≡</button>
+  </div>
+  <div id="mobile-nav" class="hidden md:hidden flex flex-col gap-3 px-4 pb-4 text-sm font-bold border-t border-[var(--yellow)]/30 pt-3">
+    <a href="index.html">hub</a><a href="loja.html">loja</a><a href="carrinho.html">carrinho (<span id="cart-count-m">0</span>)</a>
+    <span id="auth-slot-m"></span><button class="theme-btn self-start" onclick="toggleTheme()">🌙 escuro</button>
+  </div>
+</header>
+<div id="toast-wrap"></div>
+<main>
+  <section class="view active">
+    <div class="tint-b grain">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-10 pb-6">
+        <h1 class="display text-4xl sm:text-5xl">a loja</h1>
+        <p class="text-sm mt-1" style="color:var(--ink-soft)">equipamento pra quem faz barulho e pra quem sente vibração.</p>
+        <div class="mt-6 flex flex-col sm:flex-row gap-3"><input id="search-input" type="search" placeholder="procurar produto... ex: fone, vibra, pick-up" class="flex-1" oninput="renderCatalog()"></div>
+        <div id="chip-row" class="flex flex-wrap gap-2 mt-4"></div>
+      </div>
+    </div>
+    <div class="tint-a grain"><div class="max-w-6xl mx-auto px-4 sm:px-6 py-10"><div id="catalog-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8"></div><p id="catalog-empty" class="hidden text-sm mt-6" style="color:var(--ink-soft)">nada com esse nome no estoque. tenta outra palavra.</p></div></div>
+  </section>
+</main>
+<div class="tape"></div>
+<footer class="on-black py-10"><div class="max-w-6xl mx-auto px-4 sm:px-6 text-[var(--white)]/60 text-xs leading-relaxed"><p class="display text-lg mb-2" style="color:var(--yellow)">BEATCORE</p><p class="max-w-lg">loja independente de caixa, fone, vinil e equipamento de vibração. feito por quem tá na rua, pra quem tá na rua — com ou sem ouvido. sem contrato, sem algoritmo, sem frescura.</p></div></footer>
+<script src="script.js"></script>
+</body>
+</html>
